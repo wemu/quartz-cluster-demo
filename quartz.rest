@@ -1,0 +1,23 @@
+### read flyway version when run via maven spring-boot-plugin
+GET localhost:8080/flyway
+
+### read flyway version Node 1
+GET localhost:8080/flyway
+
+### read Scheduler Status
+GET localhost:8080/scheduler/standby
+
+### read name from Node 1
+GET localhost:18080/name
+### read name from Node 2
+GET localhost:28080/name
+### read name from Node 3
+GET localhost:38080/name
+
+### create new job on Node 1
+PUT localhost:18080/job
+### create new job on Node 2
+PUT localhost:28080/job
+### create new job on Node 3
+PUT localhost:38080/job
+
