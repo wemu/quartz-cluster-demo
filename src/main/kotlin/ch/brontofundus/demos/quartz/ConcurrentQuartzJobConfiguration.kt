@@ -26,6 +26,7 @@ class ConcurrentQuartzJobConfiguration {
     }
 
     @Bean
+    @Qualifier("triggerConcurrent")
     fun writeNameWithConcurrentQuartzTrigger(@Qualifier("jobDetailConcurrent") jd: JobDetail): Trigger {
         return TriggerBuilder
             .newTrigger()
