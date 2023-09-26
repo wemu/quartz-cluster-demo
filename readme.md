@@ -57,3 +57,9 @@ INST_WAITMILLIS is used to allow every instance of the application to execute th
 Watch out for the concurrent jobs (the might just run several times, even on the same node - especially if the jobs overlap - meaning they execute faster than they complete, so the next execution starts before the last one finished). A different behaviour is shown with the non-concurrent variation of the job (look out for the `DisallowConcurrentExecution` annotation!)
 
 You can still use the Scheduled annotation from spring - but be aware that all instances will run them (might still be useful for some use-cases).
+
+If you pause the scheduler, this will only affect that one instance of the application. The others still run.
+
+To stop all processing you can stop all the triggers - this will affect the whole cluster.
+
+JobListener only fire on the instance that was executing the job as well.
