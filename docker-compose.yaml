@@ -35,7 +35,7 @@ services:
       - postgresdb
     environment:
       INST_NAME: "02-paul"
-      INST_WAITMILLIS: 25000
+      INST_WAITMILLIS: 20000
       SPRING_PROFILES_ACTIVE: dockercompose
     ports:
       - "28080:8080"
@@ -49,7 +49,7 @@ services:
       - postgresdb
     environment:
       INST_NAME: "03-friedolin"
-      INST_WAITMILLIS: 35000
+      INST_WAITMILLIS: 25000
       SPRING_PROFILES_ACTIVE: dockercompose
     ports:
       - "38080:8080"

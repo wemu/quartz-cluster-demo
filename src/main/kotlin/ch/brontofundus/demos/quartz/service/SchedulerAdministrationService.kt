@@ -1,12 +1,12 @@
 package ch.brontofundus.demos.quartz.service
 
-import ch.brontofundus.demos.quartz.jobs.EXECUTED_INSTANCE_NAME_KEY
 import ch.brontofundus.demos.quartz.service.dto.JobInfo
 import ch.brontofundus.demos.quartz.service.dto.TriggerInfo
 import org.quartz.*
 import org.quartz.impl.matchers.GroupMatcher
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import kotlin.text.StringBuilder
 
 @Service
 class SchedulerAdministrationService(val scheduler: Scheduler) {
@@ -58,9 +58,22 @@ class SchedulerAdministrationService(val scheduler: Scheduler) {
                     triggerInfos.add(TriggerInfo(trigger.key, trigger.startTime, triggerState.name, info))
                 }
 
-                val executedOnInstance = jobDetail.jobDataMap.getString(EXECUTED_INSTANCE_NAME_KEY)
+                val ranOnInstances = StringBuilder()
+                jobDetail.jobDataMap.entries.forEach {
+                    ranOnInstances.append(it.key)
+                    ranOnInstances.append("=")
+                    ranOnInstances.append(it.value)
+                    ranOnInstances.append(", ")
+                }
 
-                jobInfos.add(JobInfo(jobDetail.key.toString(), jobDetail.description, triggerInfos, executedOnInstance))
+                val disallowConcurrentExecution = jobDetail.isConcurrentExectionDisallowed
+
+                jobInfos.add(JobInfo(
+                    jobDetail.key.toString(),
+                    jobDetail.description,
+                    triggerInfos,
+                    ranOnInstances.toString(),
+                    disallowConcurrentExecution))
             }
         }
 

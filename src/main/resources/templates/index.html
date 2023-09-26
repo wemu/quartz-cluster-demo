@@ -42,10 +42,17 @@
             </div>
         </form>
 
-        <form action="#" th:action="@{/scheduler/job}" method="post" class="pure-form pure-form-aligned">
+        <form action="#" th:action="@{/scheduler/concurrent-job}" method="post" class="pure-form pure-form-aligned">
             <div class="pure-control-group">
                 <label>create Jobs:</label>
                 <input type="submit" value="go!"/>
+            </div>
+        </form>
+
+        <form action="#" th:action="@{/scheduler/non-concurrent-job}" method="post" class="pure-form pure-form-aligned">
+            <div class="pure-control-group">
+                <label>create Non-Concurrent Jobs:</label>
+                <input type="submit" value="go (NC)!"/>
             </div>
         </form>
 
@@ -83,6 +90,7 @@
                         <li>Schedule</li>
                     </ul>
                 </th>
+                <th>Disallow Concurrent</th>
             </tr>
             <tr th:each="job : ${jobs}">
                 <td th:title="${job.key}" th:text="${#strings.substring(job.key,job.key.length()-13,job.key.length())}"></td>
@@ -95,6 +103,7 @@
                         <li th:text="${triggerInfo.schedule}"></li>
                     </ul>
                 </td>
+                <td th:text="${job.disallowConcurrentExecution}"></td>
             </tr>
         </table>
     </div>

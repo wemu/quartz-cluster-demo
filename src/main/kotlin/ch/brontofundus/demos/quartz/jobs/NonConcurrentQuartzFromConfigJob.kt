@@ -11,7 +11,7 @@ import org.springframework.scheduling.quartz.QuartzJobBean
 
 @DisallowConcurrentExecution
 @PersistJobDataAfterExecution
-class QuartzFromConfigJob : QuartzJobBean() {
+class NonConcurrentQuartzFromConfigJob : QuartzJobBean() {
 
     @Autowired
     private var envPropsConfiguration: EnvPropsConfiguration? = null
@@ -20,19 +20,20 @@ class QuartzFromConfigJob : QuartzJobBean() {
     private var someService: SomeService? = null
         set
 
-    private val logger = LoggerFactory.getLogger(QuartzFromConfigJob::class.java)
+    private val logger = LoggerFactory.getLogger(NonConcurrentQuartzFromConfigJob::class.java)
 
     override fun executeInternal(context: JobExecutionContext) {
-        logger.info("${envPropsConfiguration!!.name}: Job (configured via Spring Beans) is STARTING!")
+        logger.info("${envPropsConfiguration!!.name}: Non-Concurrent Job (configured via Spring Beans) is STARTING!")
 
         logger.info("    ${envPropsConfiguration!!.name} will pause for ${envPropsConfiguration!!.waitmillis}ms")
         someService!!.saySomething(envPropsConfiguration!!.name)
 
         Thread.sleep(envPropsConfiguration!!.waitmillis)
 
-        context.jobDetail.jobDataMap.put(EXECUTED_INSTANCE_NAME_KEY, envPropsConfiguration!!.name)
+        context.jobDetail.jobDataMap.put(EXECUTED_INSTANCE_NAME_KEY + envPropsConfiguration!!.name, envPropsConfiguration!!.name)
+        context.jobDetail.jobDataMap.put(LAST_EXECUTED_INSTANCE_NAME_KEY, envPropsConfiguration!!.name)
 
-        logger.info("    ${envPropsConfiguration!!.name}: Job (from Spring Config) has FINISHED.")
+        logger.info("    ${envPropsConfiguration!!.name}: Non-Concurrent Job (from Spring Config) has FINISHED.")
     }
 
 }
