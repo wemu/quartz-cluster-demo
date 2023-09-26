@@ -14,3 +14,40 @@ a {
 iframe {
     height: 100vh;
 }
+
+table.jobs {
+    border: 1px solid slategrey;
+}
+
+table.jobs th {
+    text-align: left;
+    vertical-align: top;
+    border: 1px solid darkgray;
+}
+
+table.jobs tr td {
+    border: 1px solid dimgrey;
+}
+
+table ul {
+    display: block;
+    list-style-type: disc;
+    margin-block-start: 0;
+    margin-block-end: 0;
+    margin-inline-start: 0;
+    margin-inline-end: 0;
+    padding-inline-start: 20px;
+}
+
+.standbyFalse {
+    background-color: lightgreen;
+    font-weight: bold;
+    padding: 3px;
+}
+
+.standbyTrue {
+    background-color: indianred;
+    font-weight: normal;
+    font-style: italic;
+    padding: 3px;
+}

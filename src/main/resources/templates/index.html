@@ -7,73 +7,90 @@
     <title>Spring Boot Quartz Demo Application</title>
 </head>
 <body>
-<h1>Quartz Demo</h1>
-<a onClick="window.location.reload()">Refresh page</a>
+<h1>Quartz Cluster Demo</h1>
 
-<h2>Scheduler Status</h2>
+<h2>Instance Scheduler Information</h2>
 <form class="pure-form pure-form-aligned">
     <div class="pure-control-group">
-        <label for="instanceName">InstanceName:</label>
+        <label for="instanceName">Name:</label>
         <span id="instanceName" th:text="${instanceName}"/>
     </div>
     <div class="pure-control-group">
-        <label for="instanceWaitMillis">Instance Wait ms:</label>
+        <label for="instanceWaitMillis">Wait ms:</label>
         <span id="instanceWaitMillis" th:text="${instanceWaitMillis}"/>
     </div>
     <div class="pure-control-group">
-        <label for="isInStandby">Instance is in Standby:</label>
-        <span id="isInStandby" th:text="${isInStandby}"/>
+        <label for="isInStandby">Standby:</label>
+        <span id="isInStandby" th:text="${isInStandby}" th:class="${isInStandby ? 'standbyTrue' : 'standbyFalse'}"/>
     </div>
 </form>
 
 <div class="pure-g">
-    <div class="pure-u-1-2">
+    <div class="pure-u-1-1">
+        <h2>Scheduler and Job Control Center</h2>
         <form action="#" th:action="@{/scheduler/standby}" method="post" class="pure-form pure-form-aligned">
             <div class="pure-control-group">
-                <span>Standby</span>
+                <label>Standby</label>
                 <input type="submit" value="Enable Standby">
             </div>
         </form>
-    </div>
-    <div class="pure-u-1-2">
+
         <form action="#" th:action="@{/scheduler/resume}" method="post" class="pure-form pure-form-aligned">
             <div class="pure-control-group">
-                <span>Resume</span>
+                <label>Resume</label>
                 <input type="submit" value="Resume Standby" />
+            </div>
+        </form>
+
+        <form action="#" th:action="@{/scheduler/job}" method="post" class="pure-form pure-form-aligned">
+            <div class="pure-control-group">
+                <label>create Jobs:</label>
+                <input type="submit" value="go!"/>
+            </div>
+        </form>
+
+        <form action="#" th:action="@{/triggers/standby}" method="post" class="pure-form pure-form-aligned">
+            <div class="pure-control-group">
+                <label>Pause ALL Triggers:</label>
+                <input type="submit" value="Triggers stop!"/>
+            </div>
+        </form>
+
+        <form action="#" th:action="@{/triggers/resume}" method="post" class="pure-form pure-form-aligned">
+            <div class="pure-control-group">
+                <label>Resume ALL Triggers:</label>
+                <input type="submit" value="Triggers continue!"/>
             </div>
         </form>
     </div>
 </div>
 
+
 <div class="pure-g">
-    <div class="pure-u-1-3">
-        <h2>create Job</h2>
-        <form action="#" th:action="@{/scheduler/job}" method="post" class="pure-form pure-form-aligned">
-            <div class="pure-control-group">
-                <label for="jobName">create Jobs:</label>
-                <input id="jobNAme" type="submit" value="go!"/>
-            </div>
-        </form>
+    <div class="pure-u-1-1">
+        <a onClick="window.location.reload()">Refresh page</a>
     </div>
-    <div class="pure-u-2-3">
-        <table>
+    <div class="pure-u-1-1">
+        <table class="jobs">
             <tr>
                 <th>Job-Key</th>
                 <th>Description</th>
-                <th>Trigger Infos:<br>
+                <th>Ran on</th>
+                <th>Trigger Information<br>
                     <ul>
-                        <li>start time</li>
-                        <li>state</li>
-                        <li>schedule</li>
+                        <li>Start time</li>
+                        <li>State</li>
+                        <li>Schedule</li>
                     </ul>
                 </th>
             </tr>
             <tr th:each="job : ${jobs}">
-                <td th:text="${job.key}"></td>
+                <td th:title="${job.key}" th:text="${#strings.substring(job.key,job.key.length()-13,job.key.length())}"></td>
                 <td th:text="${job.description}"></td>
+                <td th:text="${job.executedOnInstance}"></td>
                 <td>
                     <ul th:each="triggerInfo : ${job.triggerInfos}">
-                        <li th:text="${triggerInfo.startTime}"></li>
+                        <li th:text="${#dates.format(triggerInfo.startTime, 'dd.MM.yyyy HH:mm:ss')}"></li>
                         <li th:text="${triggerInfo.state}"></li>
                         <li th:text="${triggerInfo.schedule}"></li>
                     </ul>

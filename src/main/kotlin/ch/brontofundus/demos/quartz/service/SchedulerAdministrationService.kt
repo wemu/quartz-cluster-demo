@@ -1,5 +1,6 @@
 package ch.brontofundus.demos.quartz.service
 
+import ch.brontofundus.demos.quartz.jobs.EXECUTED_INSTANCE_NAME_KEY
 import ch.brontofundus.demos.quartz.service.dto.JobInfo
 import ch.brontofundus.demos.quartz.service.dto.TriggerInfo
 import org.quartz.*
@@ -28,8 +29,11 @@ class SchedulerAdministrationService(val scheduler: Scheduler) {
     @Transactional
     fun pauseAllTriggers() {
         scheduler.pauseAll()
+    }
 
-        val pausedTriggerGroups = scheduler.pausedTriggerGroups
+    @Transactional
+    fun resumeAllTriggers() {
+        scheduler.resumeAll()
     }
 
     @Transactional(readOnly = true)
@@ -47,18 +51,20 @@ class SchedulerAdministrationService(val scheduler: Scheduler) {
 
                     val info: String = when(trigger) {
                         is CronTrigger -> trigger.cronExpression
-                        is SimpleTrigger -> trigger.nextFireTime.toString()
+                        is SimpleTrigger -> trigger.nextFireTime?.toString() ?: ""
                         else -> trigger.toString()
                     }
 
                     triggerInfos.add(TriggerInfo(trigger.key, trigger.startTime, triggerState.name, info))
                 }
 
-                jobInfos.add(JobInfo(jobDetail.key.toString(), jobDetail.description, triggerInfos))
+                val executedOnInstance = jobDetail.jobDataMap.getString(EXECUTED_INSTANCE_NAME_KEY)
+
+                jobInfos.add(JobInfo(jobDetail.key.toString(), jobDetail.description, triggerInfos, executedOnInstance))
             }
         }
 
-        return jobInfos
+        return jobInfos.sortedBy { jobInfo -> jobInfo.key }
     }
 
 }

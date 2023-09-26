@@ -89,4 +89,20 @@ class QuartJobsController(val envPropsConfiguration: EnvPropsConfiguration,
         return RedirectView("/")
     }
 
+    @PostMapping("/triggers/standby")
+    fun triggersStandy(model: Model): RedirectView {
+        logger.info("Triggers to standby.")
+        schedulerAdministrationService.pauseAllTriggers()
+
+        return RedirectView("/")
+    }
+
+    @PostMapping("/triggers/resume")
+    fun triggersResume(model: Model): RedirectView {
+        logger.info("Triggers resume.")
+        schedulerAdministrationService.resumeAllTriggers()
+
+        return RedirectView("/")
+    }
+
 }
