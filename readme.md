@@ -2,11 +2,15 @@
 
 ## Features of this Demo
 
+* show usage of Spring Boot and the Quartz-Scheduler
 * enable cluster mode for Quartz Jobs in Spring Boot
-
+* Provide docker-compose file to start a realistic cluster
+* use PostgreSQL to demonstrate JDBC Store and concurrent job execution
 
 
 ## Source of Quartz Database Script for Postgres
+
+This demo uses Flyway to populate the database. Including the Quartz required tables mean you need to make Flyway aware of those scripts. In the demo we copied it. It's source:
 
 **Quartz Postgres Scripts**
 
@@ -35,7 +39,21 @@ You can browse each instance by itself or open [/frames](http://localhost:18080/
 
 - http://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/tutorial-lesson-06.html
 - http://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/crontrigger.html
+- [Cron Expressions Generator](https://www.freeformatter.com/cron-expression-generator-quartz.html)
 
-## Cron Expressions zum Klicken
-- https://www.freeformatter.com/cron-expression-generator-quartz.html
+## Learn and Observe
 
+Every instance of the application will start with two properties:
+
+```
+INST_NAME: "anyNumer-somename"
+INST_WAITMILLIS: 25000
+```
+
+INST_NAME is used to identify the instance of the application in the cluster - it is used for logging and creating the Job keys and information.
+
+INST_WAITMILLIS is used to allow every instance of the application to execute the Jobs slower than other nodes - if you want to play around with overlapping job execution times.
+
+Watch out for the concurrent jobs (the might just run several times, even on the same node - especially if the jobs overlap - meaning they execute faster than they complete, so the next execution starts before the last one finished). A different behaviour is shown with the non-concurrent variation of the job (look out for the `DisallowConcurrentExecution` annotation!)
+
+You can still use the Scheduled annotation from spring - but be aware that all instances will run them (might still be useful for some use-cases).
