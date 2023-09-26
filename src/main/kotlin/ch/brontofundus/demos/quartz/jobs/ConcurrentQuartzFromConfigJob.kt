@@ -2,7 +2,6 @@ package ch.brontofundus.demos.quartz.jobs
 
 import ch.brontofundus.demos.quartz.props.EnvPropsConfiguration
 import ch.brontofundus.demos.quartz.service.SomeService
-import org.quartz.DisallowConcurrentExecution
 import org.quartz.JobExecutionContext
 import org.quartz.PersistJobDataAfterExecution
 import org.slf4j.LoggerFactory
@@ -14,10 +13,9 @@ class ConcurrentQuartzFromConfigJob : QuartzJobBean() {
 
     @Autowired
     private var envPropsConfiguration: EnvPropsConfiguration? = null
-        set
+
     @Autowired
     private var someService: SomeService? = null
-        set
 
     private val logger = LoggerFactory.getLogger(ConcurrentQuartzFromConfigJob::class.java)
 

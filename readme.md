@@ -16,7 +16,7 @@
 
 ### Start Single Instance (Development)
 
-If you just run the [QuartzDemoApplication.kt](src%2Fmain%2Fkotlin%2Fch%2Fbrontofundus%2Fdemos%2Fquartz%2FQuartzDemoApplication.kt) Spring-Boot Application you need to start the database first, using [run-postgres.sh](run-postgres.sh)
+If you just run the [QuartzDemoApplication.kt](src/main/kotlin/ch/brontofundus/demos/quartz/QuartzDemoApplication.kt) Spring-Boot Application you need to start the database first, using [run-postgres.sh](run-postgres.sh)
 
 Open [localhost](http://localhost:8080/) to view the state of the application.
 

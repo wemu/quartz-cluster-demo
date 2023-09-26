@@ -15,10 +15,9 @@ class NonConcurrentQuartzFromConfigJob : QuartzJobBean() {
 
     @Autowired
     private var envPropsConfiguration: EnvPropsConfiguration? = null
-        set
+
     @Autowired
     private var someService: SomeService? = null
-        set
 
     private val logger = LoggerFactory.getLogger(NonConcurrentQuartzFromConfigJob::class.java)
 

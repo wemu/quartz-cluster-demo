@@ -10,7 +10,7 @@ class SpringScheduledJobs(val envPropsConfiguration: EnvPropsConfiguration) {
 
     private val logger = LoggerFactory.getLogger(SpringScheduledJobs::class.java)
 
-    //@Scheduled(cron = "*/10 * * * * *")
+    @Scheduled(cron = "51 * * * * *")
     fun tellLogOurName() {
         logger.info("@Scheduled Method, for name: ${envPropsConfiguration.name}")
     }

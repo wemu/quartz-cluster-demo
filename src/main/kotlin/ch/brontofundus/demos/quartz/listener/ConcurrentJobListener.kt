@@ -7,9 +7,9 @@ import org.quartz.JobListener
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-class ConcurrentJobListener(val envPropsConfiguration: EnvPropsConfiguration) : JobListener {
+class ConcurrentJobListener(private val envPropsConfiguration: EnvPropsConfiguration) : JobListener {
 
-    val logger: Logger = LoggerFactory.getLogger(ConcurrentJobListener::class.java)
+    private val logger: Logger = LoggerFactory.getLogger(ConcurrentJobListener::class.java)
 
     override fun getName(): String {
         return "concurrent-job-listener"

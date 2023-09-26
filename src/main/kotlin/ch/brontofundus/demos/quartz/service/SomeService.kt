@@ -13,8 +13,4 @@ class SomeService {
         logger.info("    ${who}: Something! " + Date())
     }
 
-    fun sum(a: Int, b: Int) : Int {
-        return a + b
-    }
-
 }
