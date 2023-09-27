@@ -69,6 +69,15 @@
                 <input type="submit" value="Triggers continue!"/>
             </div>
         </form>
+
+        <hr>
+
+        <form action="#" th:action="@{/orders}" method="post" class="pure-form pure-form-aligned">
+            <div class="pure-control-group">
+                <label>Create Order and Trigger:</label>
+                <input type="submit" value="Order 66!"/>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -78,6 +87,7 @@
         <a onClick="window.location.reload()">Refresh page</a>
     </div>
     <div class="pure-u-1-1">
+        <h2>Jobs and Triggers</h2>
         <table class="jobs">
             <tr>
                 <th>Job-Key</th>
@@ -104,6 +114,30 @@
                     </ul>
                 </td>
                 <td th:text="${job.disallowConcurrentExecution}"></td>
+            </tr>
+        </table>
+    </div>
+
+    <hr>
+
+    <div class="pure-u-1-1">
+        <h2>Orders</h2>
+        <table class="orders">
+            <tr>
+                <th>Id</th>
+                <th>state</th>
+                <th>created</th>
+                <th>started</th>
+                <th>completed<br>
+                <th>comment</th>
+            </tr>
+            <tr th:each="order : ${orders}">
+                <td th:title="${order.id}" th:text="${#strings.substring(order.id,order.id.length()-6,order.id.length())}"></td>
+                <td th:text="${order.state}"></td>
+                <td th:text="${#dates.format(order.createdAt, 'dd.MM.yyyy HH:mm:ss')}"></td>
+                <td th:text="${#dates.format(order.startedAt, 'dd.MM.yyyy HH:mm:ss')}"></td>
+                <td th:text="${#dates.format(order.completedAt, 'dd.MM.yyyy HH:mm:ss')}"></td>
+                <td th:text="${order.comment}"></td>
             </tr>
         </table>
     </div>

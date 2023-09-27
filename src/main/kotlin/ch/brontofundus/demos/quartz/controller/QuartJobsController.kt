@@ -3,6 +3,7 @@ package ch.brontofundus.demos.quartz.controller
 import ch.brontofundus.demos.quartz.jobs.NonConcurrentQuartzFromRestCallJob
 import ch.brontofundus.demos.quartz.jobs.ConcurrentQuartzFromRestCallJob
 import ch.brontofundus.demos.quartz.props.EnvPropsConfiguration
+import ch.brontofundus.demos.quartz.service.OrderService
 import ch.brontofundus.demos.quartz.service.SchedulerAdministrationService
 import org.flywaydb.core.Flyway
 import org.quartz.*
@@ -20,7 +21,9 @@ class QuartJobsController(
     val envPropsConfiguration: EnvPropsConfiguration,
     val flyway: Flyway,
     val schedulerFactoryBean: SchedulerFactoryBean,
-    val schedulerAdministrationService: SchedulerAdministrationService) {
+    val schedulerAdministrationService: SchedulerAdministrationService,
+    val orderService: OrderService
+) {
 
     private val logger = LoggerFactory.getLogger(QuartJobsController::class.java)
 
@@ -130,6 +133,15 @@ class QuartJobsController(
     fun triggersResume(model: Model): RedirectView {
         logger.info("Triggers resume.")
         schedulerAdministrationService.resumeAllTriggers()
+
+        return RedirectView("/")
+    }
+
+    @PostMapping("/orders")
+    fun createOrder(model: Model): RedirectView {
+        logger.info("Creating a new Order and setting a Trigger for it.")
+
+        orderService.createNewOrder()
 
         return RedirectView("/")
     }
