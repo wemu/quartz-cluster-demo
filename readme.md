@@ -63,3 +63,5 @@ If you pause the scheduler, this will only affect that one instance of the appli
 To stop all processing you can stop all the triggers - this will affect the whole cluster.
 
 JobListener only fire on the instance that was executing the job as well.
+
+The Order66 Button creates an order (not a quart feature, it is meant to represent some sort of item that needs processing). With every order there is also a quartz job and trigger created. The Job execution is then distributed within the cluster by quartz.
