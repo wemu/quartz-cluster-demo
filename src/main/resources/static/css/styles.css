@@ -56,3 +56,20 @@ table.orders tr td {
     border: 1px solid dimgrey;
     margin: 0;
 }
+
+.triggersPausedTrue {
+    background-color: indianred;
+    font-weight: normal;
+    font-style: italic;
+    padding: 3px;
+}
+
+.triggersPausedFalse {
+    background-color: lightgreen;
+    font-weight: bold;
+    padding: 3px;
+}
+
+form.floatingForm {
+    display: inline;
+}

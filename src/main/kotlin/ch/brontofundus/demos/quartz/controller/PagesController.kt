@@ -24,6 +24,8 @@ class PagesController(
 
         model.addAttribute("orders", orderService.readAllOrders())
 
+        model.addAttribute("triggersPaused", schedulerAdministrationService.allTriggersPaused())
+
         return "index"
     }
 

@@ -2,11 +2,12 @@ package ch.brontofundus.demos.quartz.service
 
 import ch.brontofundus.demos.quartz.service.dto.JobInfo
 import ch.brontofundus.demos.quartz.service.dto.TriggerInfo
-import org.quartz.*
+import org.quartz.CronTrigger
+import org.quartz.Scheduler
+import org.quartz.SimpleTrigger
 import org.quartz.impl.matchers.GroupMatcher
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import kotlin.text.StringBuilder
 
 @Service
 class SchedulerAdministrationService(val scheduler: Scheduler) {
@@ -34,6 +35,13 @@ class SchedulerAdministrationService(val scheduler: Scheduler) {
     @Transactional
     fun resumeAllTriggers() {
         scheduler.resumeAll()
+    }
+
+    fun allTriggersPaused(): Boolean {
+        val allGroupNames: List<String> = scheduler.triggerGroupNames
+        val pausedGroupNames: Set<String> = scheduler.pausedTriggerGroups
+
+        return pausedGroupNames.containsAll(allGroupNames)
     }
 
     @Transactional(readOnly = true)

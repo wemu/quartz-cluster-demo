@@ -10,82 +10,58 @@
 <h1>Quartz Cluster Demo</h1>
 
 <h2>Instance Scheduler Information</h2>
-<form class="pure-form pure-form-aligned">
-    <div class="pure-control-group">
-        <label for="instanceName">Name:</label>
-        <span id="instanceName" th:text="${instanceName}"/>
-    </div>
-    <div class="pure-control-group">
-        <label for="instanceWaitMillis">Wait ms:</label>
-        <span id="instanceWaitMillis" th:text="${instanceWaitMillis}"/>
-    </div>
-    <div class="pure-control-group">
-        <label for="isInStandby">Standby:</label>
-        <span id="isInStandby" th:text="${isInStandby}" th:class="${isInStandby ? 'standbyTrue' : 'standbyFalse'}"/>
-    </div>
-</form>
-
 <div class="pure-g">
-    <div class="pure-u-1-1">
-        <h2>Scheduler and Job Control Center</h2>
-        <form action="#" th:action="@{/scheduler/standby}" method="post" class="pure-form pure-form-aligned">
-            <div class="pure-control-group">
-                <label>Standby</label>
-                <input type="submit" value="Enable Standby">
-            </div>
+    <div class="pure-u-4-24">
+        Name: <b th:text="${instanceName}"/>
+    </div>
+    <div class="pure-u-4-24">
+        Wait ms: <b th:text="${instanceWaitMillis}"/>
+    </div>
+    <div class="pure-u-8-24">
+        Scheduler Standby: <span th:text="${isInStandby}" th:class="${isInStandby ? 'standbyTrue' : 'standbyFalse'}"/>
+        <form th:if="${!isInStandby}" action="#" th:action="@{/scheduler/standby}" method="post" class="floatingForm">
+            <input type="submit" value="Enable Standby">
         </form>
 
-        <form action="#" th:action="@{/scheduler/resume}" method="post" class="pure-form pure-form-aligned">
-            <div class="pure-control-group">
-                <label>Resume</label>
-                <input type="submit" value="Resume Standby" />
-            </div>
+        <form th:if="${isInStandby}" action="#" th:action="@{/scheduler/resume}" method="post" class="floatingForm">
+            <input type="submit" value="Resume Standby" />
+        </form>
+    </div>
+    <div class="pure-u-8-24">
+        Triggers Paused: <span th:text="${triggersPaused}" th:class="${triggersPaused ? 'triggersPausedTrue' : 'triggersPausedFalse'}"/>
+        <form th:if="${!triggersPaused}" action="#" th:action="@{/triggers/standby}" method="post" class="floatingForm">
+            <input type="submit" value="Pause ALL Triggers!"/>
         </form>
 
-        <form action="#" th:action="@{/scheduler/concurrent-job}" method="post" class="pure-form pure-form-aligned">
-            <div class="pure-control-group">
-                <label>create Jobs:</label>
-                <input type="submit" value="go!"/>
-            </div>
-        </form>
-
-        <form action="#" th:action="@{/scheduler/non-concurrent-job}" method="post" class="pure-form pure-form-aligned">
-            <div class="pure-control-group">
-                <label>create Non-Concurrent Jobs:</label>
-                <input type="submit" value="go (NC)!"/>
-            </div>
-        </form>
-
-        <form action="#" th:action="@{/triggers/standby}" method="post" class="pure-form pure-form-aligned">
-            <div class="pure-control-group">
-                <label>Pause ALL Triggers:</label>
-                <input type="submit" value="Triggers stop!"/>
-            </div>
-        </form>
-
-        <form action="#" th:action="@{/triggers/resume}" method="post" class="pure-form pure-form-aligned">
-            <div class="pure-control-group">
-                <label>Resume ALL Triggers:</label>
-                <input type="submit" value="Triggers continue!"/>
-            </div>
-        </form>
-
-        <hr>
-
-        <form action="#" th:action="@{/orders}" method="post" class="pure-form pure-form-aligned">
-            <div class="pure-control-group">
-                <label>Create Order and Trigger:</label>
-                <input type="submit" value="Order 66!"/>
-            </div>
+        <form th:if="${triggersPaused}" action="#" th:action="@{/triggers/resume}" method="post" class="floatingForm">
+            <input type="submit" value="Resume ALL Triggers!"/>
         </form>
     </div>
 </div>
 
-
+<h2>Job Control Center</h2>
 <div class="pure-g">
-    <div class="pure-u-1-1">
+    <div class="pure-u-1-4">
         <a onClick="window.location.reload()">Refresh page</a>
     </div>
+    <div class="pure-u-1-4">
+        <form action="#" th:action="@{/scheduler/concurrent-job}" method="post" class="pure-form pure-form-aligned">
+            <input type="submit" value="create concurrent Job!"/>
+        </form>
+    </div>
+    <div class="pure-u-1-4">
+        <form action="#" th:action="@{/scheduler/non-concurrent-job}" method="post" class="pure-form pure-form-aligned">
+            <input type="submit" value="create Non-Concurrent Job!"/>
+        </form>
+    </div>
+    <div class="pure-u-1-4">
+        <form action="#" th:action="@{/orders}" method="post" class="pure-form pure-form-aligned">
+            <input type="submit" value="Order 66! (create order and trigger)"/>
+        </form>
+    </div>
+</div>
+
+<div class="pure-g">
     <div class="pure-u-1-1">
         <h2>Jobs and Triggers</h2>
         <table class="jobs">
